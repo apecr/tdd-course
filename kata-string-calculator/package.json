@@ -1,0 +1,13 @@
+{
+  "name" : "kata-string-calculator",
+  "version" : "1.0.0",
+  "main" : "string-calculator.js",
+  "scripts" : {
+    "test": "mocha -u tdd"
+  },
+  "author": "Alberto Eyo",
+  "license": "ISC",
+  "devDependencies":{
+    "mocha": "^3.1.2"
+  }
+}
