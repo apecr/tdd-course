@@ -17,4 +17,7 @@ suite('Add', function(){
   test('should return 6 when string is 1,2,3', function(){
     assert.equal(6, converter.add('1,2,3'));
   });
+  test('should return 6 when string is 1,2,3', function(){
+    assert.equal(7, converter.add('1,2,3,1'));
+  });
 });
