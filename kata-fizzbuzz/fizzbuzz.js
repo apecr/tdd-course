@@ -3,8 +3,15 @@
 // three and five prints "FizzBuzz"
 //
 
-//module.exports = function FizzBuzz(){
-//  this.print = function(number){
-//
-//  }
-//}
+module.exports = function FizzBuzz(){
+  this.print = function(number){
+    isInteger(number);
+    return number;
+  }
+};
+
+function isInteger(argument){
+  if (false === Number.isInteger(argument)){
+    throw new Error('Number is not an Integer');
+  }
+}
