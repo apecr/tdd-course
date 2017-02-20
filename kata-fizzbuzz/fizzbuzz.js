@@ -3,15 +3,25 @@
 // three and five prints "FizzBuzz"
 //
 
-module.exports = function FizzBuzz(){
+module.exports = function FizzBuzz(database){
+  this.database = database;
   this.print = function(number){
-    isInteger(number);
-    return number;
+    var result = number;
+    isNotIntegerThrowException(number);
+    if (isMultipleOfThrre(number)){
+      database.initConnection();
+      result = database.getStringWhenThreeNumber();
+    }
+    return result;
   }
 };
 
-function isInteger(argument){
+function isNotIntegerThrowException(argument){
   if (false === Number.isInteger(argument)){
     throw new Error('Number is not an Integer');
   }
+}
+
+function isMultipleOfThrre(number){
+  return 0 === number % 3;
 }
