@@ -1,9 +1,15 @@
 /**
  * http://usejsdoc.org/
  */
-module.exports = function List(){
+module.exports = function List(jsonfile){
   const JSON_FILENAME = 'lists.json';
-  this.getLists = function(jsonfile){
-    return jsonfile.readFileSync(JSON_FILENAME);
-  }
+  this.jsonfile = jsonfile;
+  this.getLists = function(){
+    return this.jsonfile.readFileSync(JSON_FILENAME);
+  };
+  this.createList = function(listName){
+    var lists = this.getLists();
+		lists[listName] = [];
+    this.jsonfile.writeFileSync(JSON_FILENAME, lists);
+  };
 };
