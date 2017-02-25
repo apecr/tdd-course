@@ -8,18 +8,19 @@ var List = require('../list.js');
 
 suite('List', function(){
 	this.listObject = null;
-	this.mockJsonfile = null;
+	var mockJsonfile = null;
 	const JSON_FILE = 'lists.json';
+	const TODO_LIST = 'ToDo';
 	setup(function(){
 		this.mockJsonfile = sinon.mock(jsonfile);
-		this.listObject = new List(jsonfile);
+		this.listManager = createListManager(jsonfile);
 	});
 	test('should get all lists', function(){
 		//Arrange
 		var listSalida = {};
 		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(listSalida);
 		//Act
-		var result = this.listObject.getLists();
+		var result = this.listManager.getLists();
 		//Assert
 		assert.equal(listSalida, result);
 		this.mockJsonfile.verify();
@@ -27,14 +28,35 @@ suite('List', function(){
 	test('should create a new list with name', function(){
 		//Arrange
 		var emptyList = {};
-		var lists = {};
-		var listName = 'ToDo';
-		lists[listName] = [];
+		var lists = createToDoList();
 		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(emptyList);
 		this.mockJsonfile.expects('writeFileSync').once().withArgs(JSON_FILE, lists);
 		//Act
-		this.listObject.createList(listName);
+		this.listManager.createList(TODO_LIST);
 		//Assert
 		this.mockJsonfile.verify();
 	});
+	test('should throw an error when trying create a list with an existing name', function(){
+		//Arrange
+		var lists = createToDoList();
+		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(lists);
+		this.mockJsonfile.expects('writeFileSync').never();
+		//Act
+		//Assert
+		var self = this;
+		assert.throws(function(){
+			self.listManager.createList(TODO_LIST)
+		}, /List exists!/);
+		this.mockJsonfile.verify();
+	});
+
+	function createListManager(jsonfile){
+		return new List(jsonfile);
+	}
+
+	function createToDoList(){
+		var lists = {};
+		lists[TODO_LIST] = [];
+		return lists;
+	}
 });
