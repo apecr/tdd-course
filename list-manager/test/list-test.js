@@ -57,6 +57,7 @@ suite('List', function(){
 		this.mockJsonfile.expects('writeFileSync').once().withArgs(JSON_FILE, emptyList);
 		//Act
 		this.listManager.removeList(TODO_LIST);
+		
 		//Assert
 		this.mockJsonfile.verify();
 	});
