@@ -49,6 +49,17 @@ suite('List', function(){
 		}, /List exists!/);
 		this.mockJsonfile.verify();
 	});
+	test('should remove a existing list', function(){
+		//Arrange
+		var lists = createToDoList();
+		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(lists);
+		var emptyList = {};
+		this.mockJsonfile.expects('writeFileSync').once().withArgs(JSON_FILE, emptyList);
+		//Act
+		this.listManager.removeList(TODO_LIST);
+		//Assert
+		this.mockJsonfile.verify();
+	});
 
 	function createListManager(jsonfile){
 		return new List(jsonfile);
