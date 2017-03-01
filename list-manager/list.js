@@ -4,6 +4,7 @@
 module.exports = function List(jsonfile){
   const JSON_FILENAME = 'lists.json';
   this.jsonfile = jsonfile;
+
   this.getLists = function(){
     return jsonfile.readFileSync(JSON_FILENAME);
   };
@@ -17,6 +18,8 @@ module.exports = function List(jsonfile){
 
   this.removeList = function(listName){
     var listCollection = this.getLists();
+    var errorMessage = 'List not exists!';
+    this.throwErrorIfNotExistListCollectionWhenRemoveList(listCollection, listName, errorMessage);
     this.forInListCollectionAndListEqualListNameExecuteFunction(
       listCollection,
       listName,
@@ -24,19 +27,29 @@ module.exports = function List(jsonfile){
       [listName, listCollection]);
   };
 
+  this.createTaskInList =function(taskName, listName){
+    var listCollection = this.getLists();
+    listCollection[listName].push(taskName);
+    this.writeListCollectionInJson(listCollection);
+  };
+
+  this.throwErrorIfNotExistListCollectionWhenRemoveList = function(listCollection, listName, errorMessage){
+    if (false === listCollection.hasOwnProperty(listName)){
+      this.throwErrorListExist(errorMessage);
+    }
+  }
+
   this.throwErrorIfListExistWhenCreate = function(listCollection, listName){
     this.forInListCollectionAndListEqualListNameExecuteFunction(
       listCollection,
       listName,
       'throwErrorListExist',
-      []);
+      ['List exists!']);
   };
 
   this.forInListCollectionAndListEqualListNameExecuteFunction = function(listCollection, listName, functionName, params){
-    for (var list in listCollection){
-      if (list === listName){
-          this[functionName].apply(this, params);
-      }
+    if (true === listCollection.hasOwnProperty(listName)){
+      this[functionName].apply(this, params);
     }
   }
 
@@ -45,8 +58,8 @@ module.exports = function List(jsonfile){
     this.writeListCollectionInJson(listCollection);
   }
 
-  this.throwErrorListExist = function(){
-    throw new Error('List exists!');
+  this.throwErrorListExist = function(message){
+    throw new Error(message);
   }
   this.writeListCollectionInJson =  function(listCollection){
     jsonfile.writeFileSync(JSON_FILENAME, listCollection);

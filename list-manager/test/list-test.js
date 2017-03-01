@@ -61,6 +61,33 @@ suite('List', function(){
 		this.mockJsonfile.verify();
 	});
 
+	test('should throw error when remove a list not exist', function(){
+		//Arrange
+		var listSalida = {};
+		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(listSalida);
+		this.mockJsonfile.expects('writeFileSync').never();
+		//Act
+		//Assert
+		self = this;
+		assert.throws(function(){
+			self.listManager.removeList(TODO_LIST)
+		}, /List not exists!/);
+		this.mockJsonfile.verify();
+	});
+
+	test('should add task in a list', function(){
+		//Arrange
+		var listCollection = createToDoList();
+		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(listCollection);
+		var taskName = 'Add task in a list';
+		listCollection[TODO_LIST].push(taskName);
+		this.mockJsonfile.expects('writeFileSync').once().withArgs(JSON_FILE, listCollection);
+		//Act
+		this.listManager.createTaskInList(taskName, TODO_LIST);
+		//Assert
+		this.mockJsonfile.verify();
+	});
+
 	function createListManager(jsonfile){
 		return new List(jsonfile);
 	}
