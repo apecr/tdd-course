@@ -15,6 +15,9 @@ suite('Print', function(){
     this.mockDatabase = sinon.mock(database);
     this.fizzBuzz = new FizzBuzz(database);
   });
+  test('Another test', function(){
+    assert.ok(true,'Test OK');
+  });
   test('return 1 when print number one', function(){
     //Arrange
     expectInitConnectionNever(this.mockDatabase);
