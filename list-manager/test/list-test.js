@@ -6,16 +6,16 @@ var sinon = require('sinon');
 var jsonfile = require('jsonfile');
 var List = require('../list.js');
 
-suite('List', function(){
+describe('List', function(){
 	this.listObject = null;
 	var mockJsonfile = null;
 	const JSON_FILE = 'lists.json';
 	const TODO_LIST = 'ToDo';
-	setup(function(){
+	beforeEach(function(){
 		this.mockJsonfile = sinon.mock(jsonfile);
 		this.listManager = createListManager(jsonfile);
 	});
-	test('should get all lists', function(){
+	it('should get all lists', function(){
 		//Arrange
 		var listSalida = {};
 		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(listSalida);
@@ -25,7 +25,7 @@ suite('List', function(){
 		assert.equal(listSalida, result);
 		this.mockJsonfile.verify();
 	});
-	test('should create a new list with name', function(){
+	it('should create a new list with name', function(){
 		//Arrange
 		var emptyList = {};
 		var lists = createToDoList();
@@ -36,7 +36,7 @@ suite('List', function(){
 		//Assert
 		this.mockJsonfile.verify();
 	});
-	test('should throw an error when trying create a list with an existing name', function(){
+	it('should throw an error when trying create a list with an existing name', function(){
 		//Arrange
 		var lists = createToDoList();
 		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(lists);
@@ -49,7 +49,7 @@ suite('List', function(){
 		}, /List exists!/);
 		this.mockJsonfile.verify();
 	});
-	test('should remove a existing list', function(){
+	it('should remove a existing list', function(){
 		//Arrange
 		var lists = createToDoList();
 		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(lists);
@@ -61,7 +61,7 @@ suite('List', function(){
 		this.mockJsonfile.verify();
 	});
 
-	test('should throw error when remove a list not exist', function(){
+	it('should throw error when remove a list not exist', function(){
 		//Arrange
 		var listSalida = {};
 		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(listSalida);
@@ -75,7 +75,7 @@ suite('List', function(){
 		this.mockJsonfile.verify();
 	});
 
-	test('should add task in a list', function(){
+	it('should add task in a list', function(){
 		//Arrange
 		var listCollection = createToDoList();
 		this.mockJsonfile.expects('readFileSync').once().withArgs(JSON_FILE).returns(listCollection);
