@@ -3,10 +3,10 @@ var sinon = require('sinon');
 
 var FizzBuzz = require('../fizzbuzz.js');
 
-suite('Print', function(){
+describe('Print', function(){
   var fizzBuzz = null;
   var mockDatabase = null;
-  setup( function(){
+  beforeEach( function(){
     var database = {
       initConnection : function(){},
       getStringWhenThreeNumber : function(){},
@@ -15,10 +15,10 @@ suite('Print', function(){
     this.mockDatabase = sinon.mock(database);
     this.fizzBuzz = new FizzBuzz(database);
   });
-  test('Another test', function(){
+  it('Another test', function(){
     assert.ok(true,'Test OK');
   });
-  test('return 1 when print number one', function(){
+  it('return 1 when print number one', function(){
     //Arrange
     expectInitConnectionNever(this.mockDatabase);
     //Act
@@ -27,7 +27,7 @@ suite('Print', function(){
     this.mockDatabase.verify();
     assert.equal('1', result);
   });
-  test('return 2 when print number two', function(){
+  it('return 2 when print number two', function(){
     //Arrange
     expectInitConnectionNever(this.mockDatabase);
     //Act
@@ -36,7 +36,7 @@ suite('Print', function(){
     this.mockDatabase.verify();
     assert.equal('2', result);
   });
-  test('Throw exception when argument is string', function(){
+  it('Throw exception when argument is string', function(){
     //Arrange
     expectInitConnectionNever(this.mockDatabase);
     //Act
@@ -47,7 +47,7 @@ suite('Print', function(){
     }, /Number is not an Integer/);
     this.mockDatabase.verify();
   });
-  test('return Fizz when print number three', function(){
+  it('return Fizz when print number three', function(){
     //Arrange
     expectInitConnectionOnce(this.mockDatabase);
     this.mockDatabase.expects('getStringWhenThreeNumber').once().returns('Fizz');
@@ -57,7 +57,7 @@ suite('Print', function(){
     this.mockDatabase.verify();
     assert.equal('Fizz', result);
   });
-  test('return Buzz when print number five', function(){
+  it('return Buzz when print number five', function(){
     //Arrange
     expectInitConnectionOnce(this.mockDatabase);
     this.mockDatabase.expects('getStringWhenFiveNumber').once().returns('Buzz');
@@ -67,7 +67,7 @@ suite('Print', function(){
     this.mockDatabase.verify();
     assert.equal('Buzz', result);
   });
-  test('return FizzBuzz when print number fifteen', function(){
+  it('return FizzBuzz when print number fifteen', function(){
     //Arrange
     expectInitConnectionOnce(this.mockDatabase);
     this.mockDatabase.expects('getStringWhenThreeNumber').once().returns('Fizz');
@@ -78,7 +78,7 @@ suite('Print', function(){
     this.mockDatabase.verify();
     assert.equal('FizzBuzz', result);
   });
-  test('return Fizz when print number six', function(){
+  it('return Fizz when print number six', function(){
     //Arrange
     expectInitConnectionOnce(this.mockDatabase);
     this.mockDatabase.expects('getStringWhenThreeNumber').once().returns('Fizz');
@@ -88,7 +88,7 @@ suite('Print', function(){
     this.mockDatabase.verify();
     assert.equal('Fizz', result);
   });
-  test('return Buzz when print number ten', function(){
+  it('return Buzz when print number ten', function(){
     //Arrange
     expectInitConnectionOnce(this.mockDatabase);
     this.mockDatabase.expects('getStringWhenFiveNumber').once().returns('Buzz');
@@ -98,7 +98,7 @@ suite('Print', function(){
     this.mockDatabase.verify();
     assert.equal('Buzz', result);
   });
-  test('return FizzBuzz when print number fourtyfive', function(){
+  it('return FizzBuzz when print number fourtyfive', function(){
     //Arrange
     expectInitConnectionOnce(this.mockDatabase);
     this.mockDatabase.expects('getStringWhenThreeNumber').once().returns('Fizz');
